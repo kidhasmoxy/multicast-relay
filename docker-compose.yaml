@@ -1,0 +1,33 @@
+version: '2'
+  services:
+    multicast-relay:
+      container_name: multicast-relay
+      image: kidhasmoxy/multicast-relay
+      hostname: mdnsrelay
+      networks:
+        iot_network:
+         # ipv4_address: 192.168.20.240  #  Not needed if you use a tight ipam
+        lan_network:
+         # ipv4_address: 192.168.1.240 #  Not needed if you use a tight ipam
+      restart: unless-stopped
+  # ssdpUnicastAddr should be on IoT vlan to allow for simple firewall config (as return queries can go to pretty random ports)
+      command: --foreground --interfaces eth0 eth1 --wait --ssdpUnicastAddr 192.168.20.240 
+  networks:
+    lan_network:
+      driver: macvlan
+      driver_opts:
+        parent: eth1          # <-- using default network
+      ipam:
+        config:
+          - subnet: 192.168.1.0/24         # <-- Update
+            gateway: 192.168.1.1         # <-- Update
+            ip_range: 192.168.1.240/32         # <-- Update
+    iot_network:
+      driver: macvlan
+      driver_opts:
+        parent: eth1.20         # <-- Update to Vlan ID
+      ipam:
+        config:
+          - subnet: 192.168.20.0/24         # <-- Update
+            gateway: 192.168.20.1          # <-- Update
+            ip_range: 192.168.20.240/32             # <-- Update
