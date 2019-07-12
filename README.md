@@ -1,3 +1,11 @@
+Simple image based on https://github.com/alsmith/multicast-relay. Useful for repeating a variety of multicast traffic across vlans when combined with the macvlan driver. Small tweaks made to work with macvlan when you aren't using 802.1q trunking since the arp cache is only built by explicit requests from container (for example ping.) Must supply a command to work properly, arguments and readme available on original project github.
+
+Python3 tag doesn't work, but the latest tag does. Original code needs refactoring to work with Python 3. 
+
+Compose example: https://gist.github.com/kidhasmoxy/d55f0b50adb01e0e0f98a4f305db43fb
+
+
+
 Relay broadcast and multicast packets between interfaces
 --------------------------------------------------------
 
